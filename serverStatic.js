@@ -10,6 +10,12 @@ app.get("/", function (req, res) {
   res.redirect("/index.html");
 });
 
+var todos = [];
+
+app.get("/addtodo", function (req, res){
+  console.log(req);
+});
+
 app.use(methodOverride());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({

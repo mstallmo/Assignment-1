@@ -2,7 +2,7 @@
 <html>
 <head>
   <script>
-  function loadFile(filename, callback)
+  function loadURL(url, callback)
   {
 
     var aXMLHttpRequest = getXMLHTTPRequest();
@@ -13,7 +13,7 @@
     if (aXMLHttpRequest)
 
     {
-      aXMLHttpRequest.open("GET", filename, true);
+      aXMLHttpRequest.open("GET", url, true);
 
       aXMLHttpRequest.onreadystatechange = function (aEvt) {
 
@@ -46,13 +46,19 @@
 
   function addNew()
   {
-    
+    var newtodo = prompt("Enter New ToDo", "")
+    alert(newtodo);
+    var url = "./addtodo?value=" + encodeURIComponent(newtodo);
+    var callback = function(data){
+      alert(data);
+    }
+    loadURL(url, callback);
   }
   </script>
 </head>
 <body>
   <h1> Todos </h1>
-  <a href='javascript:addnew()'> Add New </a>
+  <a href='javascript:addNew()'> Add New </a>
 
   <div id='list'>
   </div>
