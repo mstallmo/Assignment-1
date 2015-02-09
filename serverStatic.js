@@ -4,7 +4,7 @@ bodyParser = require('body-parser'),
 errorHandler = require('errorhandler'),
 methodOverride = require('method-override'),
 hostname = process.env.HOSTNAME || 'localhost',
-//port = parseInt(process.env.PORT, 10) || 4567;
+port = parseInt(process.env.PORT, 10) || 4567;
 port = 8080;
 app.get("/", function (req, res) {
   res.redirect("/index.html");
@@ -13,8 +13,18 @@ app.get("/", function (req, res) {
 var todos = [];
 
 app.get("/addtodo", function (req, res){
-  console.log(req);
+  var x = req.query.newtodo;
+  todos[todos.length] = x;
+  res.end("added");
 });
+
+app.get("/deletetodo", function(req, res){
+  delete todos[]
+});
+
+app.get("/listtodos", function(req, res){
+  res.end(JSON.stringify(todos));
+})
 
 app.use(methodOverride());
 app.use(bodyParser.json());

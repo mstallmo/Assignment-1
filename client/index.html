@@ -47,13 +47,71 @@
   function addNew()
   {
     var newtodo = prompt("Enter New ToDo", "")
-    alert(newtodo);
-    var url = "./addtodo?value=" + encodeURIComponent(newtodo);
+    var url = "./addtodo?newtodo=" + encodeURIComponent(newtodo);
     var callback = function(data){
-      alert(data);
+        if(data === "added"){
+          updateList();
+        }
     }
     loadURL(url, callback);
   }
+
+  function updateList()
+  {
+    var url = "./listtodos";
+    var callback = function(data){
+        var list = JSON.parse(data);
+        var output = "";
+        for(var i = 0; i < list.length; i++){
+            output = output + "<p>" + list[i] + "</p>";
+            output = output + "<a href='javascript:deleteTodo(" + i.toString() + ")'>" + "Delete</a>";
+            output = output + "<hr>";
+
+        }
+        document.getElementById("list").innerHTML = output;
+    }
+    loadURL(url, callback);
+  }
+
+  function deleteTodo(index)
+  {
+    var url = "./deletetodo?index=" + encodeURIComponent(index);
+    var callback = function(data){
+        if(data === "deleted"){
+          updateList();
+        }
+    }
+    loadURL(url, callback);
+  }
+
+  /*
+This method uses a couple different methods of instantiating the
+XMLHttpRequest object. The reason we do this is so we can support
+multiple browser (I've only tested in IE and Firefox).
+*/
+function getXMLHTTPRequest()
+{
+    var request;
+
+    // Lets try using ActiveX to instantiate the XMLHttpRequest object
+    try{
+        request = new ActiveXObject("Microsoft.XMLHTTP");
+    }catch(ex1){
+        try{
+            request = new ActiveXObject("Msxml2.XMLHTTP");
+        }catch(ex2){
+            request = null;
+        }
+    }
+
+    // If the previous didn't work, lets check if the browser natively support XMLHttpRequest
+    if(!request && typeof XMLHttpRequest != "undefined"){
+        //The browser does, so lets instantiate the object
+        request = new XMLHttpRequest();
+    }
+
+    return request;
+}
   </script>
 </head>
 <body>
@@ -61,6 +119,7 @@
   <a href='javascript:addNew()'> Add New </a>
 
   <div id='list'>
+    list is empty
   </div>
 </body>
 </html>
