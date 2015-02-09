@@ -19,7 +19,9 @@ app.get("/addtodo", function (req, res){
 });
 
 app.get("/deletetodo", function(req, res){
-  delete todos[]
+  var i = req.query.index;
+  todos.splice(i,1);
+  res.end("deleted");
 });
 
 app.get("/listtodos", function(req, res){

@@ -68,7 +68,12 @@
             output = output + "<hr>";
 
         }
+        if(list.length == 0){
+          document.getElementById("list").innerHTML = "List is empty";
+        } else{
+          
         document.getElementById("list").innerHTML = output;
+        }
     }
     loadURL(url, callback);
   }
