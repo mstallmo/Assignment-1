@@ -44,51 +44,6 @@
 
   }
 
-  function addNew()
-  {
-    var newtodo = prompt("Enter New ToDo", "")
-    var url = "./addtodo?newtodo=" + encodeURIComponent(newtodo);
-    var callback = function(data){
-        if(data === "added"){
-          updateList();
-        }
-    }
-    loadURL(url, callback);
-  }
-
-  function updateList()
-  {
-    var url = "./listtodos";
-    var callback = function(data){
-        var list = JSON.parse(data);
-        var output = "";
-        for(var i = 0; i < list.length; i++){
-            output = output + "<p>" + list[i] + "</p>";
-            output = output + "<a href='javascript:deleteTodo(" + i.toString() + ")'>" + "Delete</a>";
-            output = output + "<hr>";
-
-        }
-        if(list.length == 0){
-          document.getElementById("list").innerHTML = "List is empty";
-        } else{
-          
-        document.getElementById("list").innerHTML = output;
-        }
-    }
-    loadURL(url, callback);
-  }
-
-  function deleteTodo(index)
-  {
-    var url = "./deletetodo?index=" + encodeURIComponent(index);
-    var callback = function(data){
-        if(data === "deleted"){
-          updateList();
-        }
-    }
-    loadURL(url, callback);
-  }
-
   /*
 This method uses a couple different methods of instantiating the
 XMLHttpRequest object. The reason we do this is so we can support
@@ -117,6 +72,53 @@ function getXMLHTTPRequest()
 
     return request;
 }
+
+  function addNew()
+  {
+    var newtodo = prompt("Enter New ToDo", "")
+    var url = "./addtodo?newtodo=" + encodeURIComponent(newtodo);
+    var callback = function(data){
+        if(data === "added"){
+          updateList();
+        }
+    }
+    loadURL(url, callback);
+  }
+
+  function updateList()
+  {
+    var url = "./listtodos";
+    var callback = function(data){
+        var list = JSON.parse(data);
+        var output = "";
+        for(var i = 0; i < list.length; i++){
+            output = output + "<p>" + list[i] + "</p>";
+            output = output + "<a href='javascript:deleteTodo(" + i.toString() +
+             ")'>" + "Delete</a>";
+            output = output + "<hr>";
+
+        }
+        if(list.length == 0){
+          document.getElementById("list").innerHTML = "List is empty";
+        } else{
+          document.getElementById("list").innerHTML = output;
+        }
+    }
+    loadURL(url, callback);
+  }
+
+  function deleteTodo(index)
+  {
+    var url = "./deletetodo?index=" + encodeURIComponent(index);
+    var callback = function(data){
+        if(data === "deleted"){
+          updateList();
+        }
+    }
+    loadURL(url, callback);
+  }
+
+
   </script>
 </head>
 <body>
