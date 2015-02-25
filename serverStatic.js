@@ -10,12 +10,19 @@ app.get("/", function (req, res) {
   res.redirect("/index.html");
 });
 
+var db = require('mongoskin').db('mongodb://user:password@localhost:27017/todo');
+
 var todos = [];
 
 app.get("/addtodo", function (req, res){
-  var x = req.query.newtodo;
-  todos[todos.length] = x;
-  res.end("added");
+  var x = req.query;
+  var callback = function(error, result){
+    if(!error)
+    {
+      res.end("added");
+    }
+  }
+  db.collection("todo").insert(x, callback);
 });
 
 app.get("/deletetodo", function(req, res){
@@ -25,8 +32,13 @@ app.get("/deletetodo", function(req, res){
 });
 
 app.get("/listtodos", function(req, res){
-  res.end(JSON.stringify(todos));
-})
+  db.collection("todo").find().toArray(function(err, result){
+    if (result)
+    {
+      res.end(JSON.stringify(result));
+    }
+  });
+});
 
 app.use(methodOverride());
 app.use(bodyParser.json());

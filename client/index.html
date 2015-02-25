@@ -77,7 +77,7 @@ function getXMLHTTPRequest()
   function addNew()
   {
     var newtodo = prompt("Enter New ToDo", "")
-    var url = "./addtodo?newtodo=" + encodeURIComponent(newtodo);
+    var url = "./addtodo?newtodo=" + encodeURIComponent(newtodo) + "&todoid=" + new Date().getTime().toString();
     var callback = function(data){
         if(data === "added"){
           updateList();
@@ -86,15 +86,17 @@ function getXMLHTTPRequest()
     loadURL(url, callback);
   }
 
+  var temp;
   function updateList()
   {
     var url = "./listtodos";
     var callback = function(data){
         var list = JSON.parse(data);
+        temp = list;
         var output = "";
         for(var i = 0; i < list.length; i++){
-            output = output + "<p>" + list[i] + "</p>";
-            output = output + "<a href='javascript:deleteTodo(" + i.toString() +
+            output = output + "<p>" + list[i].newtodo + "</p>";
+            output = output + "<a href='javascript:deleteTodo(" + list[i].toString() +
              ")'>" + "Delete</a>";
             output = output + "<hr>";
 
