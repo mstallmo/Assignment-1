@@ -96,8 +96,10 @@ function getXMLHTTPRequest()
         var output = "";
         for(var i = 0; i < list.length; i++){
             output = output + "<p>" + list[i].newtodo + "</p>";
-            output = output + "<a href='javascript:deleteTodo(" + list[i].toString() +
+            output = output + "<a href='javascript:deleteTodo(" + list[i].todoid.toString() +
              ")'>" + "Delete</a>";
+             output = output + "<a href='javascript:editTodo(" +list[i].todoid.toString() +
+            ", ''" +list[i].newtodo+ "'')'" + "Edit</a>";
             output = output + "<hr>";
 
         }
@@ -121,10 +123,9 @@ function getXMLHTTPRequest()
     loadURL(url, callback);
   }
 
-
   </script>
 </head>
-<body>
+<body onload='updateList()'>
 <div id ='container'>
   <h1> Todos </h1>
   <a href='javascript:addNew()'> Add New </a>

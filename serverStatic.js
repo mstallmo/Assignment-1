@@ -27,8 +27,12 @@ app.get("/addtodo", function (req, res){
 
 app.get("/deletetodo", function(req, res){
   var i = req.query.index;
-  todos.splice(i,1);
-  res.end("deleted");
+  db.collection("todo").remove({"todoid" : i.toString()}, function(err, result){
+    if (result)
+    {
+      res.end("deleted");
+    }
+  });
 });
 
 app.get("/listtodos", function(req, res){
@@ -39,6 +43,7 @@ app.get("/listtodos", function(req, res){
     }
   });
 });
+
 
 app.use(methodOverride());
 app.use(bodyParser.json());
