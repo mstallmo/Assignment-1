@@ -86,20 +86,20 @@ function getXMLHTTPRequest()
     loadURL(url, callback);
   }
 
-  var temp;
+  var allTodos;
   function updateList()
   {
     var url = "./listtodos";
     var callback = function(data){
         var list = JSON.parse(data);
-        temp = list;
+        allTodos = list;
         var output = "";
         for(var i = 0; i < list.length; i++){
             output = output + "<p>" + list[i].newtodo + "</p>";
             output = output + "<a href='javascript:deleteTodo(" + list[i].todoid.toString() +
              ")'>" + "Delete</a>";
-             output = output + "<a href='javascript:editTodo(" +list[i].todoid.toString() +
-            ", ''" +list[i].newtodo+ "'')'" + "Edit</a>";
+             output = output + "<a href='javascript:editTodo(" + list[i].todoid.toString() +
+             ")'>" + "Edit</a>";
             output = output + "<hr>";
 
         }
@@ -121,6 +121,42 @@ function getXMLHTTPRequest()
         }
     }
     loadURL(url, callback);
+  }
+
+  function editTodo(id, str){
+    var newtodo = prompt("Edit ToDo", getTodoText(id));
+
+    var url = "./edittodo?todoid=" + encodeURIComponent(id)
+                                  + "&newtodo=" +encodeURIComponent(newtodo);
+
+
+    var callback = function(data){
+      if(data === "done"){
+        updateList();
+      }
+    }
+    loadURL(url, callback);
+  }
+
+  function getTodoText(id)
+  {
+    for(var i = 0; i < allTodos.length; i++)
+    {
+      if(parseInt(allTodos[i].todoid) == id){
+        return allTodos[i].newtodo;
+      }
+    }
+    return "";
+  }
+
+  function getTodo_id(id)
+  {
+    for(var i = 0; i < allTodos.length; i++){
+      if(parseInt(allTodos[i].todoid) == id){
+        return allTodos[i]._id;
+      }
+    }
+    return "";
   }
 
   </script>

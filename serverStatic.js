@@ -45,6 +45,28 @@ app.get("/listtodos", function(req, res){
 });
 
 
+app.get("/edittodo", function (req, res){
+  var x = req.query;
+  var callback = function(error, result){
+    if(!error)
+    {
+      res.end("done");
+    }
+  }
+  db.collection("todo").findOne({todoid: x.todoid}, function(err, result1){
+    if(result1){
+      result1.newtodo = x.newtodo;
+      db.collection("todo").save(result1,callback);
+    }
+    else{
+      db.collection("todo").insert(x, callback);
+    }
+  });
+});
+
+
+
+
 app.use(methodOverride());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
